@@ -1,0 +1,18 @@
+{
+  "items": [
+    {
+      "name": "Demo Laptop",
+      "url": "https://example.com/products/demo-laptop",
+      "price_selector": ".price",
+      "title_selector": "h1",
+      "target_price": 900
+    },
+    {
+      "name": "Demo Monitor",
+      "url": "https://example.com/products/demo-monitor",
+      "price_selector": ".price",
+      "title_selector": "h1",
+      "target_price": 250
+    }
+  ]
+}
