@@ -11,6 +11,7 @@ from price_monitor_pipeline.monitor import (
     parse_product_page,
     snapshots_to_frame,
     write_csv,
+    write_summary,
 )
 
 
@@ -68,6 +69,7 @@ def test_frames_and_csv_export(tmp_path: Path) -> None:
     snapshot_frame = snapshots_to_frame([snapshot])
     alert_frame = alerts_to_frame(evaluate_alerts([snapshot]))
     output_path = write_csv(snapshot_frame, tmp_path / "snapshot.csv")
+    summary_path = write_summary([snapshot], evaluate_alerts([snapshot]), tmp_path / "summary.md")
 
     assert list(snapshot_frame.columns) == [
         "name",
@@ -79,3 +81,4 @@ def test_frames_and_csv_export(tmp_path: Path) -> None:
     ]
     assert len(alert_frame) == 1
     assert output_path.exists()
+    assert "Price Monitor Summary" in summary_path.read_text(encoding="utf-8")

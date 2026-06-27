@@ -6,6 +6,7 @@ from pathlib import Path
 
 import httpx
 import pandas as pd
+import pandera.pandas as pa
 from bs4 import BeautifulSoup
 
 from price_monitor_pipeline.models import PriceAlert, PriceSnapshot, WatchItem, Watchlist
@@ -15,6 +16,34 @@ PRICE_RE = re.compile(r"([0-9]+(?:[,.][0-9]{1,2})?)")
 
 class PriceParseError(ValueError):
     """Raised when a page does not contain the expected price element."""
+
+
+SNAPSHOT_SCHEMA = pa.DataFrameSchema(
+    {
+        "name": pa.Column(str, nullable=False),
+        "url": pa.Column(str, nullable=False),
+        "title": pa.Column(str, nullable=False),
+        "price": pa.Column(float, checks=pa.Check.ge(0), nullable=False),
+        "target_price": pa.Column(float, checks=pa.Check.gt(0), nullable=True),
+        "checked_at": pa.Column(pa.DateTime, nullable=False),
+    },
+    coerce=True,
+    strict=True,
+)
+
+ALERT_SCHEMA = pa.DataFrameSchema(
+    {
+        "name": pa.Column(str, nullable=False),
+        "url": pa.Column(str, nullable=False),
+        "title": pa.Column(str, nullable=False),
+        "price": pa.Column(float, checks=pa.Check.ge(0), nullable=False),
+        "target_price": pa.Column(float, checks=pa.Check.gt(0), nullable=False),
+        "delta": pa.Column(float, checks=pa.Check.ge(0), nullable=False),
+        "checked_at": pa.Column(pa.DateTime, nullable=False),
+    },
+    coerce=True,
+    strict=True,
+)
 
 
 def parse_price(raw_value: str) -> float:
@@ -79,14 +108,43 @@ def evaluate_alerts(snapshots: list[PriceSnapshot]) -> list[PriceAlert]:
 
 
 def snapshots_to_frame(snapshots: list[PriceSnapshot]) -> pd.DataFrame:
-    return pd.DataFrame([snapshot.to_row() for snapshot in snapshots])
+    frame = pd.DataFrame([snapshot.to_row() for snapshot in snapshots])
+    return SNAPSHOT_SCHEMA.validate(frame)
 
 
 def alerts_to_frame(alerts: list[PriceAlert]) -> pd.DataFrame:
-    return pd.DataFrame([alert.to_row() for alert in alerts])
+    frame = pd.DataFrame([alert.to_row() for alert in alerts])
+    if frame.empty:
+        frame = pd.DataFrame(
+            columns=["name", "url", "title", "price", "target_price", "delta", "checked_at"]
+        )
+    return ALERT_SCHEMA.validate(frame)
 
 
 def write_csv(frame: pd.DataFrame, path: Path) -> Path:
     path.parent.mkdir(parents=True, exist_ok=True)
     frame.to_csv(path, index=False)
+    return path
+
+
+def write_summary(snapshots: list[PriceSnapshot], alerts: list[PriceAlert], path: Path) -> Path:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    lines = [
+        "# Price Monitor Summary",
+        "",
+        f"- Products checked: `{len(snapshots)}`",
+        f"- Alerts triggered: `{len(alerts)}`",
+        "",
+        "## Alerts",
+        "",
+    ]
+    if alerts:
+        for alert in alerts:
+            lines.append(
+                f"- `{alert.name}` is `{alert.price}` against target `{alert.target_price}` "
+                f"(`{alert.delta}` below target)"
+            )
+    else:
+        lines.append("- No alerts triggered.")
+    path.write_text("\n".join(lines) + "\n", encoding="utf-8")
     return path

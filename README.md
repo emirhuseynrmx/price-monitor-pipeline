@@ -15,13 +15,19 @@ Built for small automation jobs where a business needs repeatable price checks, 
 - writes timestamped CSV snapshots
 - compares current price against target price
 - writes alert reports for products below threshold
+- validates snapshot and alert dataframes with Pandera
+- writes a Markdown summary report
 - supports fixture-based testing without live network calls
 
 ## Demo
 
 ```bash
 pip install -e ".[dev]"
-monitor-prices --config examples/watchlist.json --out outputs/snapshot.csv --alerts outputs/alerts.csv
+monitor-prices \
+  --config examples/watchlist.json \
+  --out outputs/snapshot.csv \
+  --alerts outputs/alerts.csv \
+  --summary outputs/summary.md
 ```
 
 ## Watchlist Example

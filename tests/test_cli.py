@@ -24,6 +24,7 @@ def test_cli_run_command(monkeypatch, tmp_path) -> None:
     monkeypatch.setattr(cli, "fetch_snapshots", fake_fetch_snapshots)
     snapshot_path = tmp_path / "snapshot.csv"
     alerts_path = tmp_path / "alerts.csv"
+    summary_path = tmp_path / "summary.md"
 
     result = CliRunner().invoke(
         cli.app,
@@ -34,6 +35,8 @@ def test_cli_run_command(monkeypatch, tmp_path) -> None:
             str(snapshot_path),
             "--alerts",
             str(alerts_path),
+            "--summary",
+            str(summary_path),
         ],
     )
 
@@ -41,3 +44,4 @@ def test_cli_run_command(monkeypatch, tmp_path) -> None:
     assert "Checked 1 products" in result.output
     assert snapshot_path.exists()
     assert alerts_path.exists()
+    assert summary_path.exists()

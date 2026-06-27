@@ -14,6 +14,7 @@ from price_monitor_pipeline.monitor import (
     load_watchlist,
     snapshots_to_frame,
     write_csv,
+    write_summary,
 )
 
 app = typer.Typer(help="Track public product prices and write CSV reports.")
@@ -25,6 +26,9 @@ def run(
     config: Annotated[Path, typer.Option(help="Watchlist JSON path.")],
     out: Annotated[Path, typer.Option(help="Snapshot CSV path.")] = Path("outputs/snapshot.csv"),
     alerts: Annotated[Path, typer.Option(help="Alerts CSV path.")] = Path("outputs/alerts.csv"),
+    summary: Annotated[Path, typer.Option(help="Markdown summary report path.")] = Path(
+        "outputs/summary.md"
+    ),
 ) -> None:
     watchlist = load_watchlist(config)
     snapshots = asyncio.run(fetch_snapshots(watchlist.items))
@@ -32,7 +36,9 @@ def run(
 
     write_csv(snapshots_to_frame(snapshots), out)
     write_csv(alerts_to_frame(alert_rows), alerts)
+    write_summary(snapshots, alert_rows, summary)
 
     console.print(f"[green]Checked {len(snapshots)} products[/green]")
     console.print(f"[green]Wrote snapshot to {out}[/green]")
+    console.print(f"[green]Wrote summary to {summary}[/green]")
     console.print(f"[yellow]Alerts: {len(alert_rows)}[/yellow]")
