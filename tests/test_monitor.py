@@ -6,6 +6,7 @@ from pathlib import Path
 from price_monitor_pipeline.models import WatchItem
 from price_monitor_pipeline.monitor import (
     alerts_to_frame,
+    build_run_manifest,
     evaluate_alerts,
     parse_price,
     parse_product_page,
@@ -82,3 +83,31 @@ def test_frames_and_csv_export(tmp_path: Path) -> None:
     assert len(alert_frame) == 1
     assert output_path.exists()
     assert "Price Monitor Summary" in summary_path.read_text(encoding="utf-8")
+
+
+def test_run_manifest_records_files_and_sources(tmp_path: Path) -> None:
+    html = Path("tests/fixtures/product_page.html").read_text(encoding="utf-8")
+    item = WatchItem(
+        name="Laptop",
+        url="https://example.com/laptop",
+        price_selector=".price",
+        title_selector="h1",
+        target_price=900,
+    )
+    snapshot = parse_product_page(html, item, checked_at=datetime.now(timezone.utc))
+    alerts = evaluate_alerts([snapshot])
+
+    manifest = build_run_manifest(
+        snapshots=[snapshot],
+        alerts=alerts,
+        files={
+            "snapshot": tmp_path / "snapshot.csv",
+            "alerts": tmp_path / "alerts.csv",
+            "summary": tmp_path / "summary.md",
+        },
+    )
+
+    assert manifest.products_checked == 1
+    assert manifest.alerts_triggered == 1
+    assert manifest.sources == ["https://example.com/laptop"]
+    assert len(manifest.schema_fingerprint) == 16

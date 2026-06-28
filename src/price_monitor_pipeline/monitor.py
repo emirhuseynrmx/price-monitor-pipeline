@@ -2,14 +2,22 @@ from __future__ import annotations
 
 import re
 from datetime import datetime, timezone
+from hashlib import sha256
 from pathlib import Path
+from uuid import uuid4
 
 import httpx
 import pandas as pd
 import pandera.pandas as pa
 from bs4 import BeautifulSoup
 
-from price_monitor_pipeline.models import PriceAlert, PriceSnapshot, WatchItem, Watchlist
+from price_monitor_pipeline.models import (
+    PriceAlert,
+    PriceSnapshot,
+    RunManifest,
+    WatchItem,
+    Watchlist,
+)
 
 PRICE_RE = re.compile(r"([0-9]+(?:[,.][0-9]{1,2})?)")
 
@@ -148,3 +156,42 @@ def write_summary(snapshots: list[PriceSnapshot], alerts: list[PriceAlert], path
         lines.append("- No alerts triggered.")
     path.write_text("\n".join(lines) + "\n", encoding="utf-8")
     return path
+
+
+def build_run_manifest(
+    *,
+    snapshots: list[PriceSnapshot],
+    alerts: list[PriceAlert],
+    files: dict[str, Path],
+) -> RunManifest:
+    return RunManifest(
+        run_id=uuid4().hex,
+        generated_at=datetime.now(timezone.utc),
+        products_checked=len(snapshots),
+        alerts_triggered=len(alerts),
+        total_alert_delta=round(sum(alert.delta for alert in alerts), 2),
+        schema_fingerprint=_schema_fingerprint(),
+        sources=sorted({str(snapshot.url) for snapshot in snapshots}),
+        files={key: value.as_posix() for key, value in files.items()},
+        notes=[
+            "Alerts are generated from public product pages only.",
+            "Selectors and thresholds come from the watchlist config.",
+            "The run does not bypass authentication, captchas, or protected pages.",
+        ],
+    )
+
+
+def write_manifest(manifest: RunManifest, path: Path) -> Path:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(manifest.model_dump_json(indent=2), encoding="utf-8")
+    return path
+
+
+def _schema_fingerprint() -> str:
+    schema_text = "|".join(
+        [
+            "snapshot:name,url,title,price,target_price,checked_at",
+            "alerts:name,url,title,price,target_price,delta,checked_at",
+        ]
+    )
+    return sha256(schema_text.encode("utf-8")).hexdigest()[:16]

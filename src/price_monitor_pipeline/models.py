@@ -52,3 +52,17 @@ class PriceAlert(BaseModel):
         data = self.model_dump(mode="python")
         data["url"] = str(self.url)
         return data
+
+
+class RunManifest(BaseModel):
+    model_config = ConfigDict(frozen=True)
+
+    run_id: str
+    generated_at: datetime
+    products_checked: int = Field(ge=0)
+    alerts_triggered: int = Field(ge=0)
+    total_alert_delta: float = Field(ge=0)
+    schema_fingerprint: str
+    sources: list[str]
+    files: dict[str, str]
+    notes: list[str] = Field(default_factory=list)

@@ -16,6 +16,7 @@ Built for repeatable public price checks, CSV snapshots, and simple threshold al
 - compares current price against target price
 - writes alert reports for products below threshold
 - validates snapshot and alert dataframes with Pandera
+- writes a run manifest with source URLs, output files, and schema fingerprint
 - writes a Markdown summary report
 - supports fixture-based testing without live network calls
 
@@ -27,7 +28,8 @@ monitor-prices \
   --config examples/watchlist.json \
   --out outputs/snapshot.csv \
   --alerts outputs/alerts.csv \
-  --summary outputs/summary.md
+  --summary outputs/summary.md \
+  --manifest outputs/manifest.json
 ```
 
 Generate a sample PDF without live network calls:
@@ -42,6 +44,7 @@ Sample report files:
 - `outputs/sample_report/price_monitor_report.pdf`
 - `outputs/sample_report/snapshot.csv`
 - `outputs/sample_report/alerts.csv`
+- `outputs/manifest.json`
 
 ![Sample price monitoring report](docs/assets/price-monitor-report-preview.png)
 
