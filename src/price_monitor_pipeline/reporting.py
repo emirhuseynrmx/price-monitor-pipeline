@@ -88,7 +88,7 @@ def generate_sample_report(
 def render_typst(report: PriceReport) -> str:
     alert_rows = "\n".join(_alert_row(alert) for alert in report.alerts)
     if not alert_rows:
-        alert_rows = "  [No alerts], [No item below target], [-], [-],"
+        alert_rows = "  [No alerts], [No product is currently at or below target], [-], [-],"
     snapshot_rows = "\n".join(_snapshot_row(snapshot) for snapshot in report.snapshots)
     return f"""#set page(margin: 42pt)
 #set text(font: "Arial", size: 10pt)
@@ -131,7 +131,7 @@ def render_typst(report: PriceReport) -> str:
   columns: (1.2fr, 1.8fr, .8fr, .8fr),
   inset: 5pt,
   stroke: rgb("#d0d5dd"),
-  [*Product*], [*Title*], [*Price*], [*Below Target*],
+  [*Product*], [*Title*], [*Price*], [*Savings*],
 {alert_rows}
 )
 
