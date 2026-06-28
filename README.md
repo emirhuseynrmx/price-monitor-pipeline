@@ -5,7 +5,7 @@
 
 Python pipeline for tracking public product prices and generating clean alert reports.
 
-Built for small automation jobs where a business needs repeatable price checks, CSV snapshots, and simple threshold alerts.
+Built for repeatable public price checks, CSV snapshots, and simple threshold alerts.
 
 ## What It Does
 
@@ -30,7 +30,7 @@ monitor-prices \
   --summary outputs/summary.md
 ```
 
-Generate a client-ready sample PDF without live network calls:
+Generate a sample PDF without live network calls:
 
 ```bash
 generate-price-report --out outputs/sample_report
