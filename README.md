@@ -30,6 +30,21 @@ monitor-prices \
   --summary outputs/summary.md
 ```
 
+Generate a client-ready sample PDF without live network calls:
+
+```bash
+generate-price-report --out outputs/sample_report
+```
+
+Sample report files:
+
+- `outputs/sample_report/price_monitor_report.typ`
+- `outputs/sample_report/price_monitor_report.pdf`
+- `outputs/sample_report/snapshot.csv`
+- `outputs/sample_report/alerts.csv`
+
+![Sample price monitoring report](docs/assets/price-monitor-report-preview.png)
+
 ## Watchlist Example
 
 ```json

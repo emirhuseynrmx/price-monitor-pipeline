@@ -30,13 +30,14 @@ dev = [
 
 [project.scripts]
 monitor-prices = "price_monitor_pipeline.cli:app"
+generate-price-report = "price_monitor_pipeline.reporting:main"
 
 [tool.setuptools.packages.find]
 where = ["src"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
-addopts = "--cov=price_monitor_pipeline --cov-report=term-missing"
+addopts = "--basetemp=.pytest_tmp --cov=price_monitor_pipeline --cov-report=term-missing"
 asyncio_mode = "auto"
 
 [tool.ruff]

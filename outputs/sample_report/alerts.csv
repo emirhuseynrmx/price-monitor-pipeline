@@ -1,0 +1,4 @@
+name,url,title,price,target_price,delta,checked_at
+Demo Laptop,https://example.com/products/demo-laptop,Demo Laptop 14,849.99,900.0,50.01,2026-06-28 09:00:00
+Ergonomic Chair,https://example.com/products/ergonomic-chair,Ergo Chair Pro,189.5,220.0,30.5,2026-06-28 09:00:00
+Noise Cancelling Headset,https://example.com/products/noise-cancelling-headset,Office ANC Headset,119.0,130.0,11.0,2026-06-28 09:00:00

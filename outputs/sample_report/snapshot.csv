@@ -1,0 +1,5 @@
+name,url,title,price,target_price,checked_at
+Demo Laptop,https://example.com/products/demo-laptop,Demo Laptop 14,849.99,900.0,2026-06-28 09:00:00
+USB-C Monitor,https://example.com/products/usb-c-monitor,27 inch USB-C Monitor,259.0,250.0,2026-06-28 09:00:00
+Ergonomic Chair,https://example.com/products/ergonomic-chair,Ergo Chair Pro,189.5,220.0,2026-06-28 09:00:00
+Noise Cancelling Headset,https://example.com/products/noise-cancelling-headset,Office ANC Headset,119.0,130.0,2026-06-28 09:00:00
