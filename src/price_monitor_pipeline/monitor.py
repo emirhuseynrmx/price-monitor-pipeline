@@ -19,9 +19,6 @@ from price_monitor_pipeline.models import (
     Watchlist,
 )
 
-PRICE_RE = re.compile(r"([0-9]+(?:[,.][0-9]{1,2})?)")
-
-
 class PriceParseError(ValueError):
     """Raised when a page does not contain the expected price element."""
 
@@ -55,11 +52,22 @@ ALERT_SCHEMA = pa.DataFrameSchema(
 
 
 def parse_price(raw_value: str) -> float:
-    normalized = raw_value.replace(",", ".")
-    match = PRICE_RE.search(normalized)
+    # Strip everything except digits, dots, and commas
+    cleaned = re.sub(r"[^\d.,]", "", raw_value.strip())
+    if not cleaned:
+        raise PriceParseError(f"Could not parse price from {raw_value!r}")
+    comma_pos = cleaned.rfind(",")
+    dot_pos = cleaned.rfind(".")
+    if comma_pos > dot_pos:
+        # European format: last separator is comma (decimal), e.g. "1.299,99"
+        normalized = cleaned.replace(".", "").replace(",", ".")
+    else:
+        # US/UK format: last separator is dot (decimal), e.g. "1,299.99"
+        normalized = cleaned.replace(",", "")
+    match = re.search(r"\d+(?:\.\d+)?", normalized)
     if match is None:
         raise PriceParseError(f"Could not parse price from {raw_value!r}")
-    return float(match.group(1))
+    return float(match.group())
 
 
 def load_watchlist(path: Path) -> Watchlist:
