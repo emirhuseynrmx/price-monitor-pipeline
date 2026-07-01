@@ -1,18 +1,46 @@
 {
   "items": [
     {
-      "name": "Demo Laptop",
-      "url": "https://example.com/products/demo-laptop",
-      "price_selector": ".price",
-      "title_selector": "h1",
-      "target_price": 900
+      "name": "Asus VivoBook X441NA-GA190",
+      "url": "https://webscraper.io/test-sites/e-commerce/allinone/product/60",
+      "price_selector": "h4.price",
+      "title_selector": "h4.card-title",
+      "target_price": 280.00
     },
     {
-      "name": "Demo Monitor",
-      "url": "https://example.com/products/demo-monitor",
-      "price_selector": ".price",
+      "name": "Acer Aspire ES1-572 Black",
+      "url": "https://webscraper.io/test-sites/e-commerce/allinone/product/68",
+      "price_selector": "h4.price",
+      "title_selector": "h4.card-title",
+      "target_price": 370.00
+    },
+    {
+      "name": "Lenovo V110-15IAP",
+      "url": "https://webscraper.io/test-sites/e-commerce/allinone/product/63",
+      "price_selector": "h4.price",
+      "title_selector": "h4.card-title",
+      "target_price": 310.00
+    },
+    {
+      "name": "HP 250 G6 Dark Ash Silver",
+      "url": "https://webscraper.io/test-sites/e-commerce/allinone/product/65",
+      "price_selector": "h4.price",
+      "title_selector": "h4.card-title",
+      "target_price": 350.00
+    },
+    {
+      "name": "A Light in the Attic",
+      "url": "https://books.toscrape.com/catalogue/a-light-in-the-attic_1000/index.html",
+      "price_selector": ".price_color",
       "title_selector": "h1",
-      "target_price": 250
+      "target_price": 40.00
+    },
+    {
+      "name": "Soumission",
+      "url": "https://books.toscrape.com/catalogue/soumission_998/index.html",
+      "price_selector": ".price_color",
+      "title_selector": "h1",
+      "target_price": 18.00
     }
   ]
 }

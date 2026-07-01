@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 import re
-
 from datetime import datetime, timezone
 from hashlib import sha256
 from pathlib import Path
@@ -19,6 +18,7 @@ from price_monitor_pipeline.models import (
     WatchItem,
     Watchlist,
 )
+
 
 class PriceParseError(ValueError):
     """Raised when a page does not contain the expected price element."""
