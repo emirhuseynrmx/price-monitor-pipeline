@@ -1,4 +1,9 @@
-# Price Monitor Pipeline
+<h1>
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="assets/logo-dark.svg">
+    <img src="assets/logo-light.svg" alt="Price Monitor Pipeline" width="620">
+  </picture>
+</h1>
 
 [![CI](https://github.com/emirhuseynrmx/price-monitor-pipeline/actions/workflows/ci.yml/badge.svg)](https://github.com/emirhuseynrmx/price-monitor-pipeline/actions)
 [![Python](https://img.shields.io/badge/python-3.10%2B-blue)](https://www.python.org/)

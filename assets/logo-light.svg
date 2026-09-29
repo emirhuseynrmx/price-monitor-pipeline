@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="720" height="200" viewBox="0 0 720 200" role="img" aria-label="Price Monitor Pipeline">
+  <rect width="720" height="200" rx="20" fill="#ffffff"/>
+  <g transform="translate(36 40)"><path d="M14 58 L58 14 L104 14 L104 60 L60 104 Z" fill="#f6f8fa" stroke="#afb8c1" stroke-width="2.5" stroke-linejoin="round"/>
+<circle cx="84" cy="34" r="8" fill="#ffffff" stroke="#afb8c1" stroke-width="2.5"/>
+<text x="58" y="72" text-anchor="middle" font-family="ui-sans-serif, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="30" font-weight="700" fill="#d9480f">$</text>
+<path d="M78 84 v22 m-8 -8 l8 8 l8 -8" fill="none" stroke="#d9480f" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/></g>
+  <text x="186" y="84" font-family="ui-sans-serif, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="38" font-weight="700" fill="#1f2328" letter-spacing="-0.5">Price Monitor</text><text x="186" y="126" font-family="ui-sans-serif, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="38" font-weight="700" fill="#1f2328" letter-spacing="-0.5">Pipeline</text>
+  <text x="187" y="160" font-family="ui-sans-serif, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="18" fill="#6e7781">Track product prices, get clean alert reports</text>
+</svg>
